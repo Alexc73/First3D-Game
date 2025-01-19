@@ -40,7 +40,6 @@ func _physics_process(delta: float) -> void:
 	
 #	Apply movement input to the xz velocity
 	if _direction:
-		_rig.look_at(position - _direction)
 		_xz_velocity = _xz_velocity.move_toward(_direction * _walking_speed, _acceleration * delta)
 	else:
 		_xz_velocity = _xz_velocity.move_toward(Vector3.ZERO, _deceleration * delta)
