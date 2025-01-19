@@ -1,0 +1,41 @@
+[gd_scene load_steps=7 format=3 uid="uid://cutv8ysrwi7y1"]
+
+[ext_resource type="Texture2D" uid="uid://bj01m28dorl7f" path="res://icon.svg" id="1_t86up"]
+[ext_resource type="Script" path="res://Scripts/player.gd" id="2_tqwri"]
+[ext_resource type="PackedScene" uid="uid://rv0edrca5qfa" path="res://Scenes/character.tscn" id="3_ukj5h"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_05hhu"]
+albedo_texture = ExtResource("1_t86up")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_ysv5y"]
+material = SubResource("StandardMaterial3D_05hhu")
+size = Vector2(5, 5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ncsy8"]
+size = Vector3(5, 0, 5)
+
+[node name="Game" type="Node3D"]
+
+[node name="Sunlight" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.999985, 0.00542791, 1.89468e-05, -0.00408912, 0.751034, 0.660251, 0.00356955, -0.660241, 0.751045, 0, 3.93465, 2.34835)
+shadow_enabled = true
+
+[node name="Player" type="Node" parent="." node_paths=PackedStringArray("_character", "_camera")]
+script = ExtResource("2_tqwri")
+_character = NodePath("../CharacterBody3D")
+_camera = NodePath("../Camera")
+
+[node name="CharacterBody3D" parent="." instance=ExtResource("3_ukj5h")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.33238, 0)
+
+[node name="Floor" type="StaticBody3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Floor"]
+mesh = SubResource("PlaneMesh_ysv5y")
+skeleton = NodePath("../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor"]
+shape = SubResource("BoxShape3D_ncsy8")
+
+[node name="Camera" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.858065, 0.513541, 0, -0.513541, 0.858065, 0, 3, 4)
