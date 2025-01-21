@@ -13,6 +13,7 @@ var _angle_difference : float
 var _xz_velocity : Vector3
 
 @onready var _animation : AnimationTree = $AnimationTree
+@onready var _state_machine : AnimationNodeStateMachinePlayback = _animation["parameters/playback"]
 @onready var _rig : Node3D = $Rig
 
 var _direction : Vector3
@@ -26,6 +27,13 @@ func walk():
 func run():
 	_movement_speed = _running_speed
 
+func jump():
+	if is_on_floor():
+		_state_machine.travel("Jump_Start")
+
+func _apply_jump_velocity():
+		velocity.y = JUMP_VELOCITY
+
 func _physics_process(delta: float) -> void:
 	#If the Player is giving movement input, face that direction
 	if _direction:
@@ -36,15 +44,6 @@ func _physics_process(delta: float) -> void:
 	# Add the gravity.
 	if not is_on_floor():
 		velocity += get_gravity() * delta
-
-	# Handle jump.
-	if Input.is_action_just_pressed("ui_accept") and is_on_floor():
-		velocity.y = JUMP_VELOCITY
-
-	# Get the input direction and handle the movement/deceleration.
-	# As good practice, you should replace UI actions with custom gameplay actions.
-	#var input_dir := Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
-	#var direction := (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 	
 	#Apply movement input to the xz velocity
 	if _direction:

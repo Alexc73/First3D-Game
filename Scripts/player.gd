@@ -10,6 +10,9 @@ func _input(event : InputEvent):
 		_character.run()
 	elif event.is_action_released("run"):
 		_character.walk()
+	elif event.is_action_pressed("jump"):
+		_character.jump()
+		
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float):
 	_input_direction = Input.get_vector("move_left", "move_right", "move_forward", "move_backward" )
